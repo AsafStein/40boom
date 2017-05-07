@@ -1,0 +1,8 @@
+package project1;
+import java.util.Scanner;
+puclic class Targil1 {
+  public static void.main(String[] args) {
+  /* The class commends will go heres
+  */
+  }
+}
