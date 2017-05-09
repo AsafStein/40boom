@@ -1,0 +1,14 @@
+package egScanners;
+import java.util.Scanner; /*Importing the scanner form java.util libarary */
+public class EgScanners {
+public static void main (String [] args) {
+Scanner scanner1 = new Scanner(System.in); /* initiating the scanner as scanner1 */
+	System.out.println("Please enter a number:");
+	String numString = scanner1.nextLine();
+	/* Taking the input the user will type at the next line and puting it into scanner1 as a string variable.*/
+	int num1 = Integer.parseInt (numString);
+	/* converting the string variable from the numString into an integer and naming it "num1" */
+	System.out.println(num1);
+	scanner1.close();
+}
+}
