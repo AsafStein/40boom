@@ -1,0 +1,53 @@
+package connectionPool;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ConnectionPool {
+
+	private static final int MAX_CONNECTIONS = 5;
+	private static List <Connection> connections = new ArrayList<>();
+	private static ConnectionPool instance = null;
+	private static String dbAddress = "jdbc:derby://localhost:1527/coupon2;create=true";
+	
+	private ConnectionPool(){  //This is a constructor for ConnectionPool Class.
+		for (int i = 0; i < MAX_CONNECTIONS; i++) {
+			try {
+				connections.add( DriverManager.getConnection(dbAddress, "root", "root") );
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}	
+			}
+	}
+	
+	public static ConnectionPool getConnectionPool() { // This is the method that builds the Object ConnectionPool  as a singelton (the object's name id "instance"). 
+		if ( instance == null ) {
+			instance = new ConnectionPool();
+		
+	}
+		
+		return instance;
+	}
+	
+	public synchronized Connection getConnection() {  
+		while (connections.size()==0){
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			// TODO Handle if pool is empty. else return System.out.println("System busy, please wait for an open connection to DataBase.");
+		}
+		Connection c = connections.get(0);
+		connections.remove(0);
+		return c;	
+	}
+	
+	public synchronized void returnConnection (Connection c){
+		connections.add(c);
+		this.notifyAll();
+	}
+}
+
